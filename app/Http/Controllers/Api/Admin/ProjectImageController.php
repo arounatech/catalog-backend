@@ -3,48 +3,50 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProjectImageRequest;
+use App\Http\Requests\UpdateProjectImageRequest;
+use App\Http\Resources\ProjectImageResource;
 use App\Models\ProjectImage;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProjectImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $projectImages = ProjectImage::query()
+            ->orderBy('sort_order')
+            ->orderByDesc('id')
+            ->paginate(15);
+
+        return ProjectImageResource::collection($projectImages);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreProjectImageRequest $request): ProjectImageResource
     {
-        //
+        $projectImage = ProjectImage::create($request->validated());
+
+        return new ProjectImageResource($projectImage);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProjectImage $projectImage)
+    public function show(ProjectImage $projectImage): ProjectImageResource
     {
-        //
+        return new ProjectImageResource($projectImage);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProjectImage $projectImage)
+    public function update(UpdateProjectImageRequest $request, ProjectImage $projectImage): ProjectImageResource
     {
-        //
+        $projectImage->update($request->validated());
+
+        return new ProjectImageResource($projectImage->fresh());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProjectImage $projectImage)
+    public function destroy(ProjectImage $projectImage): JsonResponse
     {
-        //
+        $projectImage->delete();
+
+        return response()->json([
+            'message' => 'Project image deleted successfully.',
+        ]);
     }
 }

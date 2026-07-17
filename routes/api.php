@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\PortfolioController;
 use App\Http\Controllers\Api\Admin\ProjectController;
+use App\Http\Controllers\Api\Admin\ProjectImageController;
 use App\Http\Controllers\Api\Admin\ServiceController;
 use App\Http\Controllers\Api\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -18,4 +19,5 @@ Route::prefix('admin')->group(function () {
     Route::apiResource('settings', SettingController::class);
     Route::apiResource('portfolios', PortfolioController::class);
     Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('project-images', ProjectImageController::class);
 });
