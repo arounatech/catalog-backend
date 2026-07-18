@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\Auth\AuthController as AdminAuthController;
+use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Api\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Api\Admin\ProjectImageController as AdminProjectImageController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\Frontend\ProjectController as FrontendProjectContro
 use App\Http\Controllers\Api\Frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\Api\Frontend\ServiceRequestController as FrontendServiceRequestController;
 use App\Http\Controllers\Api\User\Auth\AuthController as UserAuthController;
+use App\Http\Controllers\Api\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Api\User\ServiceRequestController as UserServiceRequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +34,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::post('auth/logout', [AdminAuthController::class, 'logout'])
             ->name('auth.logout');
+
+        Route::get('dashboard', AdminDashboardController::class)
+            ->name('dashboard');
 
         Route::apiResource('services', AdminServiceController::class);
         Route::apiResource('settings', AdminSettingController::class);
@@ -57,6 +62,9 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::post('auth/logout', [UserAuthController::class, 'logout'])
             ->name('auth.logout');
+
+        Route::get('dashboard', UserDashboardController::class)
+            ->name('dashboard');
 
         Route::apiResource('service-requests', UserServiceRequestController::class)
             ->only(['index', 'store']);
