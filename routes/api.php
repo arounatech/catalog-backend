@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\Frontend\PortfolioController as FrontendPortfolioCo
 use App\Http\Controllers\Api\Frontend\ProjectController as FrontendProjectController;
 use App\Http\Controllers\Api\Frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\Api\Frontend\ServiceRequestController as FrontendServiceRequestController;
+use App\Http\Controllers\Api\User\Auth\AuthController as UserAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', function () {
@@ -39,6 +40,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::apiResource('service-requests', AdminServiceRequestController::class)
             ->only(['index', 'show', 'update', 'destroy']);
+    });
+});
+
+Route::prefix('user')->name('user.')->group(function () {
+    Route::post('auth/register', [UserAuthController::class, 'register'])
+        ->name('auth.register');
+
+    Route::post('auth/login', [UserAuthController::class, 'login'])
+        ->name('auth.login');
+
+    Route::middleware(['auth:sanctum', 'ensure.user'])->group(function () {
+        Route::get('auth/me', [UserAuthController::class, 'me'])
+            ->name('auth.me');
+
+        Route::post('auth/logout', [UserAuthController::class, 'logout'])
+            ->name('auth.logout');
     });
 });
 
