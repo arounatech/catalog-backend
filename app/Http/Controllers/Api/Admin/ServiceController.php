@@ -9,12 +9,15 @@ use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('service.view');
+
         $services = Service::query()
             ->orderBy('sort_order')
             ->orderBy('title')
@@ -25,6 +28,8 @@ class ServiceController extends Controller
 
     public function store(StoreServiceRequest $request): ServiceResource
     {
+        Gate::authorize('service.create');
+
         $data = $request->validated();
 
         $data['slug'] = $this->generateUniqueSlug($data['title']);
@@ -36,11 +41,15 @@ class ServiceController extends Controller
 
     public function show(Service $service): ServiceResource
     {
+        Gate::authorize('service.view');
+
         return new ServiceResource($service);
     }
 
     public function update(UpdateServiceRequest $request, Service $service): ServiceResource
     {
+        Gate::authorize('service.update');
+
         $data = $request->validated();
 
         if (isset($data['title'])) {
@@ -54,6 +63,8 @@ class ServiceController extends Controller
 
     public function destroy(Service $service): JsonResponse
     {
+        Gate::authorize('service.delete');
+
         $service->delete();
 
         return response()->json([
