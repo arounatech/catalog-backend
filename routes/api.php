@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\Auth\AuthController as AdminAuthController;
 use App\Http\Controllers\Api\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Api\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Api\Admin\ProjectImageController as AdminProjectImageController;
@@ -20,20 +21,36 @@ Route::get('/ping', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::apiResource('services', AdminServiceController::class);
-    Route::apiResource('settings', AdminSettingController::class);
-    Route::apiResource('portfolios', AdminPortfolioController::class);
-    Route::apiResource('projects', AdminProjectController::class);
-    Route::apiResource('project-images', AdminProjectImageController::class);
+    Route::post('auth/login', [AdminAuthController::class, 'login'])
+        ->name('auth.login');
 
-    Route::apiResource('service-requests', AdminServiceRequestController::class)
-        ->only(['index', 'show', 'update', 'destroy']);
+    Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
+        Route::get('auth/me', [AdminAuthController::class, 'me'])
+            ->name('auth.me');
+
+        Route::post('auth/logout', [AdminAuthController::class, 'logout'])
+            ->name('auth.logout');
+
+        Route::apiResource('services', AdminServiceController::class);
+        Route::apiResource('settings', AdminSettingController::class);
+        Route::apiResource('portfolios', AdminPortfolioController::class);
+        Route::apiResource('projects', AdminProjectController::class);
+        Route::apiResource('project-images', AdminProjectImageController::class);
+
+        Route::apiResource('service-requests', AdminServiceRequestController::class)
+            ->only(['index', 'show', 'update', 'destroy']);
+    });
 });
 
 Route::prefix('public')->name('public.')->group(function () {
-    Route::apiResource('services', FrontendServiceController::class)->only(['index', 'show']);
-    Route::apiResource('portfolios', FrontendPortfolioController::class)->only(['index', 'show']);
-    Route::apiResource('projects', FrontendProjectController::class)->only(['index', 'show']);
+    Route::apiResource('services', FrontendServiceController::class)
+        ->only(['index', 'show']);
+
+    Route::apiResource('portfolios', FrontendPortfolioController::class)
+        ->only(['index', 'show']);
+
+    Route::apiResource('projects', FrontendProjectController::class)
+        ->only(['index', 'show']);
 
     Route::post('service-requests', [FrontendServiceRequestController::class, 'store'])
         ->name('service-requests.store');
