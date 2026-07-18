@@ -10,6 +10,7 @@ use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
@@ -34,6 +35,10 @@ class ServiceController extends Controller
 
         $data['slug'] = $this->generateUniqueSlug($data['title']);
 
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('services', 'public');
+        }
+
         $service = Service::create($data);
 
         return new ServiceResource($service);
@@ -54,6 +59,14 @@ class ServiceController extends Controller
 
         if (isset($data['title'])) {
             $data['slug'] = $this->generateUniqueSlug($data['title'], $service->id);
+        }
+
+        if ($request->hasFile('image')) {
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
+
+            $data['image'] = $request->file('image')->store('services', 'public');
         }
 
         $service->update($data);

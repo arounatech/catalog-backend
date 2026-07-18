@@ -10,6 +10,7 @@ use App\Models\ProjectImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectImageController extends Controller
 {
@@ -29,7 +30,13 @@ class ProjectImageController extends Controller
     {
         Gate::authorize('project_image.create');
 
-        $projectImage = ProjectImage::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_path')) {
+            $data['image_path'] = $request->file('image_path')->store('project-images', 'public');
+        }
+
+        $projectImage = ProjectImage::create($data);
 
         return new ProjectImageResource($projectImage);
     }
@@ -45,7 +52,17 @@ class ProjectImageController extends Controller
     {
         Gate::authorize('project_image.update');
 
-        $projectImage->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_path')) {
+            if ($projectImage->image_path) {
+                Storage::disk('public')->delete($projectImage->image_path);
+            }
+
+            $data['image_path'] = $request->file('image_path')->store('project-images', 'public');
+        }
+
+        $projectImage->update($data);
 
         return new ProjectImageResource($projectImage->fresh());
     }
@@ -53,6 +70,10 @@ class ProjectImageController extends Controller
     public function destroy(ProjectImage $projectImage): JsonResponse
     {
         Gate::authorize('project_image.delete');
+
+        if ($projectImage->image_path) {
+            Storage::disk('public')->delete($projectImage->image_path);
+        }
 
         $projectImage->delete();
 

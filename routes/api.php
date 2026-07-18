@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Frontend\ProjectController as FrontendProjectContro
 use App\Http\Controllers\Api\Frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\Api\Frontend\ServiceRequestController as FrontendServiceRequestController;
 use App\Http\Controllers\Api\User\Auth\AuthController as UserAuthController;
+use App\Http\Controllers\Api\User\ServiceRequestController as UserServiceRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', function () {
@@ -56,6 +57,9 @@ Route::prefix('user')->name('user.')->group(function () {
 
         Route::post('auth/logout', [UserAuthController::class, 'logout'])
             ->name('auth.logout');
+
+        Route::apiResource('service-requests', UserServiceRequestController::class)
+            ->only(['index', 'store']);
     });
 });
 

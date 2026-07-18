@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectResource extends JsonResource
 {
@@ -23,6 +24,9 @@ class ProjectResource extends JsonResource
             'body' => $this->body,
             'project_date' => $this->project_date,
             'cover_image' => $this->cover_image,
+            'cover_image_url' => $this->cover_image
+                ? Storage::disk('public')->url($this->cover_image)
+                : null,
             'status' => $this->status,
             'sort_order' => $this->sort_order,
             'portfolio' => new PortfolioResource($this->whenLoaded('portfolio')),

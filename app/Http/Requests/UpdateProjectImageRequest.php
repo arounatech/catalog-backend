@@ -24,7 +24,7 @@ class UpdateProjectImageRequest extends FormRequest
                 'integer',
                 Rule::exists('projects', 'id')->whereNull('deleted_at'),
             ],
-            'image_path' => ['sometimes', 'required', 'string', 'max:2048'],
+            'image_path' => ['sometimes', 'required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'alt_text' => ['sometimes', 'nullable', 'string', 'max:255'],
             'sort_order' => ['sometimes', 'nullable', 'integer', 'min:0'],
             'is_cover' => ['sometimes', 'nullable', 'boolean'],

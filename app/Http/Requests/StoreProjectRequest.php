@@ -27,7 +27,7 @@ class StoreProjectRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'body' => ['nullable', 'string'],
             'project_date' => ['nullable', 'date'],
-            'cover_image' => ['nullable', 'string', 'max:2048'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'status' => ['nullable', 'string', 'in:draft,published'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ];

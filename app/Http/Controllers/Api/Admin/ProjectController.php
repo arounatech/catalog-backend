@@ -10,6 +10,7 @@ use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -35,6 +36,10 @@ class ProjectController extends Controller
 
         $data['slug'] = $this->generateUniqueSlug($data['title']);
 
+        if ($request->hasFile('cover_image')) {
+            $data['cover_image'] = $request->file('cover_image')->store('projects', 'public');
+        }
+
         $project = Project::create($data);
 
         return new ProjectResource($project->load(['portfolio', 'images']));
@@ -55,6 +60,14 @@ class ProjectController extends Controller
 
         if (isset($data['title'])) {
             $data['slug'] = $this->generateUniqueSlug($data['title'], $project->id);
+        }
+
+        if ($request->hasFile('cover_image')) {
+            if ($project->cover_image) {
+                Storage::disk('public')->delete($project->cover_image);
+            }
+
+            $data['cover_image'] = $request->file('cover_image')->store('projects', 'public');
         }
 
         $project->update($data);

@@ -28,7 +28,7 @@ class UpdateProjectRequest extends FormRequest
             'description' => ['sometimes', 'nullable', 'string'],
             'body' => ['sometimes', 'nullable', 'string'],
             'project_date' => ['sometimes', 'nullable', 'date'],
-            'cover_image' => ['sometimes', 'nullable', 'string', 'max:2048'],
+            'cover_image' => ['sometimes', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'status' => ['sometimes', 'nullable', 'string', 'in:draft,published'],
             'sort_order' => ['sometimes', 'nullable', 'integer', 'min:0'],
         ];

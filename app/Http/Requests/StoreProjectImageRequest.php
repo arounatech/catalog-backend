@@ -23,7 +23,7 @@ class StoreProjectImageRequest extends FormRequest
                 'integer',
                 Rule::exists('projects', 'id')->whereNull('deleted_at'),
             ],
-            'image_path' => ['required', 'string', 'max:2048'],
+            'image_path' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'alt_text' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_cover' => ['nullable', 'boolean'],
