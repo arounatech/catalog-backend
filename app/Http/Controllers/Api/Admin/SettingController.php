@@ -9,11 +9,14 @@ use App\Http\Resources\SettingResource;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class SettingController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('setting.view');
+
         $settings = Setting::query()
             ->orderBy('group')
             ->orderBy('key')
@@ -24,6 +27,8 @@ class SettingController extends Controller
 
     public function store(StoreSettingRequest $request): SettingResource
     {
+        Gate::authorize('setting.create');
+
         $setting = Setting::create($request->validated());
 
         return new SettingResource($setting);
@@ -31,11 +36,15 @@ class SettingController extends Controller
 
     public function show(Setting $setting): SettingResource
     {
+        Gate::authorize('setting.view');
+
         return new SettingResource($setting);
     }
 
     public function update(UpdateSettingRequest $request, Setting $setting): SettingResource
     {
+        Gate::authorize('setting.update');
+
         $setting->update($request->validated());
 
         return new SettingResource($setting->fresh());
@@ -43,6 +52,8 @@ class SettingController extends Controller
 
     public function destroy(Setting $setting): JsonResponse
     {
+        Gate::authorize('setting.delete');
+
         $setting->delete();
 
         return response()->json([

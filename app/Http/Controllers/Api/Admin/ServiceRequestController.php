@@ -8,11 +8,14 @@ use App\Http\Resources\ServiceRequestResource;
 use App\Models\ServiceRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 
 class ServiceRequestController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('service_request.view');
+
         $serviceRequests = ServiceRequest::query()
             ->with(['service', 'user'])
             ->orderByDesc('id')
@@ -23,6 +26,8 @@ class ServiceRequestController extends Controller
 
     public function show(ServiceRequest $serviceRequest): ServiceRequestResource
     {
+        Gate::authorize('service_request.view');
+
         return new ServiceRequestResource(
             $serviceRequest->load(['service', 'user'])
         );
@@ -30,6 +35,8 @@ class ServiceRequestController extends Controller
 
     public function update(UpdateServiceInquiryRequest $request, ServiceRequest $serviceRequest): ServiceRequestResource
     {
+        Gate::authorize('service_request.update');
+
         $serviceRequest->update($request->validated());
 
         return new ServiceRequestResource(
@@ -39,6 +46,8 @@ class ServiceRequestController extends Controller
 
     public function destroy(ServiceRequest $serviceRequest): JsonResponse
     {
+        Gate::authorize('service_request.delete');
+
         $serviceRequest->delete();
 
         return response()->json([

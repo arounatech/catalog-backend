@@ -9,12 +9,15 @@ use App\Http\Resources\PortfolioResource;
 use App\Models\Portfolio;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class PortfolioController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('portfolio.view');
+
         $portfolios = Portfolio::query()
             ->orderBy('sort_order')
             ->orderBy('title')
@@ -25,6 +28,8 @@ class PortfolioController extends Controller
 
     public function store(StorePortfolioRequest $request): PortfolioResource
     {
+        Gate::authorize('portfolio.create');
+
         $data = $request->validated();
 
         $data['slug'] = $this->generateUniqueSlug($data['title']);
@@ -36,11 +41,15 @@ class PortfolioController extends Controller
 
     public function show(Portfolio $portfolio): PortfolioResource
     {
+        Gate::authorize('portfolio.view');
+
         return new PortfolioResource($portfolio->load('projects'));
     }
 
     public function update(UpdatePortfolioRequest $request, Portfolio $portfolio): PortfolioResource
     {
+        Gate::authorize('portfolio.update');
+
         $data = $request->validated();
 
         if (isset($data['title'])) {
@@ -54,6 +63,8 @@ class PortfolioController extends Controller
 
     public function destroy(Portfolio $portfolio): JsonResponse
     {
+        Gate::authorize('portfolio.delete');
+
         $portfolio->delete();
 
         return response()->json([

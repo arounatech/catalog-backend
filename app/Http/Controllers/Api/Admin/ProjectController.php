@@ -9,12 +9,15 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('project.view');
+
         $projects = Project::query()
             ->with('portfolio')
             ->orderBy('sort_order')
@@ -26,6 +29,8 @@ class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request): ProjectResource
     {
+        Gate::authorize('project.create');
+
         $data = $request->validated();
 
         $data['slug'] = $this->generateUniqueSlug($data['title']);
@@ -37,11 +42,15 @@ class ProjectController extends Controller
 
     public function show(Project $project): ProjectResource
     {
+        Gate::authorize('project.view');
+
         return new ProjectResource($project->load(['portfolio', 'images']));
     }
 
     public function update(UpdateProjectRequest $request, Project $project): ProjectResource
     {
+        Gate::authorize('project.update');
+
         $data = $request->validated();
 
         if (isset($data['title'])) {
@@ -55,6 +64,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project): JsonResponse
     {
+        Gate::authorize('project.delete');
+
         $project->delete();
 
         return response()->json([
