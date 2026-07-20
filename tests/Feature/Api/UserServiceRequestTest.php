@@ -19,7 +19,7 @@ class UserServiceRequestTest extends TestCase
 
         $service = Service::create([
             'title' => 'Test Service',
-            'slug' => 'test-service-' . Str::uuid(),
+            'slug' => 'test-service-'.Str::uuid(),
             'description' => 'Test service description.',
             'price' => 100,
             'image' => null,

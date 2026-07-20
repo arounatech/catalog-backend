@@ -16,7 +16,7 @@ class PublicPortfolioProjectTest extends TestCase
     {
         $portfolio = Portfolio::create([
             'title' => 'Published Test Portfolio',
-            'slug' => 'published-test-portfolio-' . Str::uuid(),
+            'slug' => 'published-test-portfolio-'.Str::uuid(),
             'description' => 'This portfolio should be visible publicly.',
             'status' => 'published',
             'sort_order' => 1,
@@ -37,7 +37,7 @@ class PublicPortfolioProjectTest extends TestCase
     {
         $portfolio = Portfolio::create([
             'title' => 'Draft Test Portfolio',
-            'slug' => 'draft-test-portfolio-' . Str::uuid(),
+            'slug' => 'draft-test-portfolio-'.Str::uuid(),
             'description' => 'This portfolio should not be visible publicly.',
             'status' => 'draft',
             'sort_order' => 1,
@@ -53,7 +53,7 @@ class PublicPortfolioProjectTest extends TestCase
         $project = Project::create([
             'portfolio_id' => null,
             'title' => 'Published Test Project',
-            'slug' => 'published-test-project-' . Str::uuid(),
+            'slug' => 'published-test-project-'.Str::uuid(),
             'description' => 'This project should be visible publicly.',
             'body' => 'Project body content.',
             'project_date' => now()->toDateString(),
@@ -78,7 +78,7 @@ class PublicPortfolioProjectTest extends TestCase
         $project = Project::create([
             'portfolio_id' => null,
             'title' => 'Draft Test Project',
-            'slug' => 'draft-test-project-' . Str::uuid(),
+            'slug' => 'draft-test-project-'.Str::uuid(),
             'description' => 'This project should not be visible publicly.',
             'body' => 'Project body content.',
             'project_date' => now()->toDateString(),

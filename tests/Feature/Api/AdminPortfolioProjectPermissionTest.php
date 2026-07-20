@@ -36,7 +36,7 @@ class AdminPortfolioProjectPermissionTest extends TestCase
 
         $portfolio = Portfolio::create([
             'title' => 'Admin Visible Portfolio',
-            'slug' => 'admin-visible-portfolio-' . Str::uuid(),
+            'slug' => 'admin-visible-portfolio-'.Str::uuid(),
             'description' => 'Visible to permitted admin.',
             'status' => 'published',
             'sort_order' => 1,
@@ -76,7 +76,7 @@ class AdminPortfolioProjectPermissionTest extends TestCase
             ->actingAs($admin, 'sanctum')
             ->postJson('/api/admin/portfolios', [
                 'title' => 'Created Portfolio Test',
-                'slug' => 'created-portfolio-test-' . Str::uuid(),
+                'slug' => 'created-portfolio-test-'.Str::uuid(),
                 'description' => 'Created during feature test.',
                 'status' => 'published',
                 'sort_order' => 1,
@@ -111,7 +111,7 @@ class AdminPortfolioProjectPermissionTest extends TestCase
         $project = Project::create([
             'portfolio_id' => null,
             'title' => 'Admin Visible Project',
-            'slug' => 'admin-visible-project-' . Str::uuid(),
+            'slug' => 'admin-visible-project-'.Str::uuid(),
             'description' => 'Visible to permitted admin.',
             'body' => 'Project body.',
             'project_date' => now()->toDateString(),
@@ -155,7 +155,7 @@ class AdminPortfolioProjectPermissionTest extends TestCase
             ->postJson('/api/admin/projects', [
                 'portfolio_id' => null,
                 'title' => 'Created Project Test',
-                'slug' => 'created-project-test-' . Str::uuid(),
+                'slug' => 'created-project-test-'.Str::uuid(),
                 'description' => 'Created during feature test.',
                 'body' => 'Project body content.',
                 'project_date' => now()->toDateString(),

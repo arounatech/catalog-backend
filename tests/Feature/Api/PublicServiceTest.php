@@ -15,7 +15,7 @@ class PublicServiceTest extends TestCase
     {
         $service = Service::create([
             'title' => 'Published Test Service',
-            'slug' => 'published-test-service-' . Str::uuid(),
+            'slug' => 'published-test-service-'.Str::uuid(),
             'description' => 'This service should be visible publicly.',
             'price' => 100,
             'image' => null,
@@ -38,7 +38,7 @@ class PublicServiceTest extends TestCase
     {
         $service = Service::create([
             'title' => 'Draft Test Service',
-            'slug' => 'draft-test-service-' . Str::uuid(),
+            'slug' => 'draft-test-service-'.Str::uuid(),
             'description' => 'This service should not be visible publicly.',
             'price' => 100,
             'image' => null,

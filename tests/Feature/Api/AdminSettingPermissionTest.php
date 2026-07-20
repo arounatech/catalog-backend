@@ -50,7 +50,7 @@ class AdminSettingPermissionTest extends TestCase
         $admin->givePermissionTo('setting.view');
 
         $setting = Setting::create([
-            'key' => 'site_title_' . Str::random(8),
+            'key' => 'site_title_'.Str::random(8),
             'value' => 'Catalog Website',
             'type' => 'string',
             'group' => 'general',
@@ -88,7 +88,7 @@ class AdminSettingPermissionTest extends TestCase
 
         $admin->givePermissionTo('setting.create');
 
-        $settingKey = 'homepage_title_' . Str::random(8);
+        $settingKey = 'homepage_title_'.Str::random(8);
 
         $response = $this
             ->actingAs($admin, 'sanctum')

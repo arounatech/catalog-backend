@@ -51,7 +51,7 @@ class AdminServicePermissionTest extends TestCase
 
         $service = Service::create([
             'title' => 'Admin Visible Service',
-            'slug' => 'admin-visible-service-' . Str::uuid(),
+            'slug' => 'admin-visible-service-'.Str::uuid(),
             'description' => 'This service should be visible to permitted admins.',
             'price' => 100,
             'image' => null,
@@ -93,7 +93,7 @@ class AdminServicePermissionTest extends TestCase
             ->actingAs($admin, 'sanctum')
             ->postJson('/api/admin/services', [
                 'title' => 'Created By Admin Test',
-                'slug' => 'created-by-admin-test-' . Str::uuid(),
+                'slug' => 'created-by-admin-test-'.Str::uuid(),
                 'description' => 'Created during feature test.',
                 'price' => 150,
                 'status' => 'published',

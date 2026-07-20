@@ -42,25 +42,26 @@ class AdminAuthTest extends TestCase
             ]);
     }
 
- public function test_admin_cannot_login_with_wrong_password(): void
-{
-    Admin::create([
-        'name' => 'Test Admin',
-        'email' => 'admin@example.com',
-        'password' => Hash::make('password123'),
-        'status' => 'active',
-    ]);
+    public function test_admin_cannot_login_with_wrong_password(): void
+    {
+        Admin::create([
+            'name' => 'Test Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password123'),
+            'status' => 'active',
+        ]);
 
-    $response = $this->postJson('/api/admin/auth/login', [
-        'email' => 'admin@example.com',
-        'password' => 'wrong-password',
-    ]);
+        $response = $this->postJson('/api/admin/auth/login', [
+            'email' => 'admin@example.com',
+            'password' => 'wrong-password',
+        ]);
 
-$response
-    ->assertStatus(422)
-    ->assertJson([
-        'message' => 'Invalid login credentials.',
-    ]);}
+        $response
+            ->assertStatus(422)
+            ->assertJson([
+                'message' => 'Invalid login credentials.',
+            ]);
+    }
 
     public function test_admin_can_access_profile_with_valid_token(): void
     {

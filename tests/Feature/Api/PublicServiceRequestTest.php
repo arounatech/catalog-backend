@@ -15,7 +15,7 @@ class PublicServiceRequestTest extends TestCase
     {
         $service = Service::create([
             'title' => 'Public Request Test Service',
-            'slug' => 'public-request-test-service-' . Str::uuid(),
+            'slug' => 'public-request-test-service-'.Str::uuid(),
             'description' => 'Test service description.',
             'price' => 100,
             'image' => null,
