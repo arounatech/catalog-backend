@@ -26,6 +26,7 @@ Route::get('/ping', function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('auth/login', [AdminAuthController::class, 'login'])
+        ->middleware('throttle:5,1')
         ->name('auth.login');
 
     Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
@@ -51,9 +52,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::prefix('user')->name('user.')->group(function () {
     Route::post('auth/register', [UserAuthController::class, 'register'])
+        ->middleware('throttle:5,1')
         ->name('auth.register');
 
     Route::post('auth/login', [UserAuthController::class, 'login'])
+        ->middleware('throttle:5,1')
         ->name('auth.login');
 
     Route::middleware(['auth:sanctum', 'ensure.user'])->group(function () {
@@ -82,5 +85,6 @@ Route::prefix('public')->name('public.')->group(function () {
         ->only(['index', 'show']);
 
     Route::post('service-requests', [FrontendServiceRequestController::class, 'store'])
+        ->middleware('throttle:10,1')
         ->name('service-requests.store');
 });
